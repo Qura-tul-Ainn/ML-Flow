@@ -9,7 +9,8 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 from src.config import FEATURES, MODEL_PATH, PROCESSED_DIR, TARGET, load_params
 from src.model import build_pipeline
 
-EXPERIMENT_NAME = "churn-prediction"
+
+EXPERIMENT_NAME = "churn-final"
 
 
 def train_and_log(train_params: dict, run_name: str = None) -> dict:
@@ -19,11 +20,12 @@ def train_and_log(train_params: dict, run_name: str = None) -> dict:
     X_train, y_train = train_df[FEATURES], train_df[TARGET]
     X_test, y_test = test_df[FEATURES], test_df[TARGET]
 
+    mlflow.set_tracking_uri("sqlite:///mlflow.db") 
     mlflow.set_experiment(EXPERIMENT_NAME)
     with mlflow.start_run(run_name=run_name):
         # TODO S1.5: Log every training parameter to MLflow.
         # Hint: mlflow.log_params(<a dict>)
-        pass
+        mlflow.log_params(train_params)
 
         pipeline = build_pipeline(train_params)
         pipeline.fit(X_train, y_train)
@@ -38,11 +40,11 @@ def train_and_log(train_params: dict, run_name: str = None) -> dict:
 
         # TODO S1.6: Log the metrics dictionary to MLflow.
         # Hint: mlflow.log_metrics(<a dict>)
-        pass
+        mlflow.log_metrics(metrics)
 
         # TODO S1.7: Log the fitted pipeline as an MLflow model.
         # Hint: mlflow.sklearn.log_model(<model>, artifact_path="model")
-        pass
+        mlflow.sklearn.log_model(pipeline, artifact_path="model")
 
     print(f"[{run_name}] " + "  ".join(f"{k}={v:.3f}" for k, v in metrics.items()))
     return {"pipeline": pipeline, "metrics": metrics}

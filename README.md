@@ -71,3 +71,38 @@ The `solution` branch contains finished code. Use it to **compare**, not to copy
 git fetch origin
 git diff origin/solution -- src/prepare.py
 ```
+#Experiment.py run 10 exoeriments
+"I selected exp-04 because it achieved the highest F1-score (0.637) among the 10 experiments, providing the best balance between precision and recall."
+
+## Step 5 — Run 10 Experiments
+
+### MLflow Experiment Results
+
+| Run | Model | n_estimators | max_depth | F1-score | Recall |
+|---|---|---:|---:|---:|---:|
+| exp-01 | Random Forest | 50 | 4 | 0.596 | 0.778 |
+| exp-02 | Random Forest | 100 | 6 | 0.607 | 0.791 |
+| exp-03 | Random Forest | 200 | 8 | 0.622 | 0.781 |
+| exp-04 | Random Forest | 100 | 10 | **0.637** | 0.775 |
+| exp-05 | Random Forest | 300 | 10 | 0.629 | 0.765 |
+| exp-06 | Random Forest | 100 | 12 | 0.623 | 0.754 |
+| exp-07 | Random Forest | 50 | 8 | 0.624 | 0.786 |
+| exp-08 | Logistic Regression | 200 | 8 | 0.606 | 0.794 |
+| exp-09 | Logistic Regression | 200 | 8 | 0.603 | **0.802** |
+| exp-10 | Logistic Regression | 200 | 8 | 0.603 | **0.802** |
+
+### Best Experiment Selection
+
+**Selected Run:** exp-04
+
+- Model: Random Forest
+- n_estimators: 100
+- max_depth: 10
+- min_samples_leaf: 5
+- random_state: 42
+- F1-score: 0.637
+- Recall: 0.775
+
+### Conclusion
+
+I selected exp-04 because it achieved the highest F1-score (0.637) among all 10 experiments. Although exp-09 and exp-10 achieved higher recall (0.802), exp-04 provided the best balance between precision and recall. Therefore, I selected exp-04 for the final model configuration.
