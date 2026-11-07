@@ -20,6 +20,27 @@ stages:
       - data.random_state
     outs:
       - data/processed
+  
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/model.py
+      - data/processed
+    params:
+      - train
+    outs:
+      - models/model.joblib
+
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+      - src/evaluate.py
+      - models/model.joblib
+      - data/processed
+    metrics:
+      - reports/metrics.json:
+          cache: false
 
   # TODO S1.10: Complete the 'train' stage.
   #   cmd:    python -m src.train
