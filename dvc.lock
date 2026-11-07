@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python -m src.get_data
+    deps:
+    - path: src/get_data.py
+      hash: md5
+      md5: e48d6758737eb954317e87aaf69446d1
+      size: 441
+    params:
+      params.yaml:
+        data.url: 
+          https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv
+    outs:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 3b0bfab28a8101b4e4fdd08025a5c235
+      size: 970457
