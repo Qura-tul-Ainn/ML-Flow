@@ -1,0 +1,90 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python -m src.get_data
+    deps:
+    - path: src/get_data.py
+      hash: md5
+      md5: e48d6758737eb954317e87aaf69446d1
+      size: 441
+    params:
+      params.yaml:
+        data.url: 
+          https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv
+    outs:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 3b0bfab28a8101b4e4fdd08025a5c235
+      size: 970457
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 3b0bfab28a8101b4e4fdd08025a5c235
+      size: 970457
+    - path: src/prepare.py
+      hash: md5
+      md5: 7dea3a39fd166e2ffb66deb3e34fddbd
+      size: 1759
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.test_size: 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
+  train:
+    cmd: python -m src.train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
+    - path: src/model.py
+      hash: md5
+      md5: 4d5deed1895ef80b0d2053615c11a236
+      size: 1739
+    - path: src/train.py
+      hash: md5
+      md5: 6b5b4e410b80fc5aa4bf4e6c01c7fe74
+      size: 2192
+    params:
+      params.yaml:
+        train:
+          model: random_forest
+          n_estimators: 100
+          max_depth: 10
+          min_samples_leaf: 5
+          C: 1.0
+          random_state: 42
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 74d9e915d3e995458ee06f094a71818a
+      size: 3500504
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
+    - path: models/model.joblib
+      hash: md5
+      md5: 74d9e915d3e995458ee06f094a71818a
+      size: 3500504
+    - path: src/evaluate.py
+      hash: md5
+      md5: fe726152a6a7f542de01d877526d572b
+      size: 923
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 65abe6c6fa4977b0f60c363b77887dcf
+      size: 86
