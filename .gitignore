@@ -7,4 +7,5 @@ mlartifacts/
 mlflow.db
 release/
 .pytest_cache/
+data/processed/*.csv
 # DVC-managed outputs are ignored automatically via the .gitignore files DVC creates
