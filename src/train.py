@@ -9,7 +9,8 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 from src.config import FEATURES, MODEL_PATH, PROCESSED_DIR, TARGET, load_params
 from src.model import build_pipeline
 
-EXPERIMENT_NAME = "churn-prediction"
+
+EXPERIMENT_NAME = "churn-final"
 
 
 def train_and_log(train_params: dict, run_name: str = None) -> dict:
@@ -19,6 +20,7 @@ def train_and_log(train_params: dict, run_name: str = None) -> dict:
     X_train, y_train = train_df[FEATURES], train_df[TARGET]
     X_test, y_test = test_df[FEATURES], test_df[TARGET]
 
+    mlflow.set_tracking_uri("sqlite:///mlflow.db") 
     mlflow.set_experiment(EXPERIMENT_NAME)
     with mlflow.start_run(run_name=run_name):
         # TODO S1.5: Log every training parameter to MLflow.
