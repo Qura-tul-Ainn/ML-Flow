@@ -16,3 +16,24 @@ stages:
       hash: md5
       md5: 3b0bfab28a8101b4e4fdd08025a5c235
       size: 970457
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: 3b0bfab28a8101b4e4fdd08025a5c235
+      size: 970457
+    - path: src/prepare.py
+      hash: md5
+      md5: 7dea3a39fd166e2ffb66deb3e34fddbd
+      size: 1759
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.test_size: 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
