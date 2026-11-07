@@ -37,3 +37,54 @@ stages:
       md5: 73deaef3b76190a6099e56009f70c606.dir
       size: 493118
       nfiles: 2
+  train:
+    cmd: python -m src.train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
+    - path: src/model.py
+      hash: md5
+      md5: 4d5deed1895ef80b0d2053615c11a236
+      size: 1739
+    - path: src/train.py
+      hash: md5
+      md5: 6b5b4e410b80fc5aa4bf4e6c01c7fe74
+      size: 2192
+    params:
+      params.yaml:
+        train:
+          model: random_forest
+          n_estimators: 100
+          max_depth: 10
+          min_samples_leaf: 5
+          C: 1.0
+          random_state: 42
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 74d9e915d3e995458ee06f094a71818a
+      size: 3500504
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 73deaef3b76190a6099e56009f70c606.dir
+      size: 493118
+      nfiles: 2
+    - path: models/model.joblib
+      hash: md5
+      md5: 74d9e915d3e995458ee06f094a71818a
+      size: 3500504
+    - path: src/evaluate.py
+      hash: md5
+      md5: fe726152a6a7f542de01d877526d572b
+      size: 923
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 65abe6c6fa4977b0f60c363b77887dcf
+      size: 86
